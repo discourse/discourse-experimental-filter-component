@@ -1,0 +1,47 @@
+.topic-query-filter {
+  &__wrapper {
+    display: flex;
+  }
+
+  &__input {
+    position: relative;
+    &:focus-within .topic-query-filter__button-group-container {
+      display: block;
+    }
+  }
+
+  &__button-group-container {
+    display: none;
+    position: absolute;
+    background: var(--secondary);
+    box-shadow: var(--shadow-dropdown);
+    z-index: z("dropdown");
+    padding: 1.5em;
+  }
+
+  &__button-group {
+    margin-bottom: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em;
+    &-header {
+      flex: 1 1 100%;
+      font-size: var(--font-up-1);
+      margin-bottom: 0.25em;
+    }
+  }
+
+  &__button-subgroup {
+    flex: 1 1 100%;
+  }
+
+  &__controls {
+    margin-left: 0.5em;
+    display: flex;
+    gap: 0.5em;
+  }
+
+  input.topic-query-filter__filter-term {
+    margin: 0;
+  }
+}

@@ -1,0 +1,77 @@
+<DSection @bodyClass="navigation-filter" @class="navigation-container">
+  <div class="topic-query-filter">
+    <div class="topic-query-filter__input">
+      {{d-icon "filter" class="topic-query-filter__icon"}}
+      <div class="topic-query-filter__wrapper">
+        <Input
+          class="topic-query-filter__filter-term"
+          @value={{this.newQueryString}}
+          @enter={{action
+            this.discoveryFilter.updateTopicsListQueryParams
+            this.newQueryString
+          }}
+          @type="text"
+          id="queryStringInput"
+          autocomplete="off"
+        />
+      </div>
+      <div class="topic-query-filter__button-group-container">
+        {{#each this.buttonGroups as |group|}}
+          <div class="topic-query-filter__button-group">
+            <div
+              class="topic-query-filter__button-group-header"
+            >{{group.label}}</div>
+            {{#each group.buttons as |b|}}
+              <DButton
+                {{on "click" (fn this.clickHandler b)}}
+                @class="{{if (this.isButtonActive b.input) 'btn-primary'}}"
+                @disabled={{if
+                  (and (eq b.label "order:[option]-asc") (not this.isOrderSet))
+                  "disabled"
+                  undefined
+                }}
+                @translatedLabel={{b.label}}
+              />
+            {{/each}}
+            {{#each group.subgroups as |subgroup|}}
+              <div class="topic-query-filter__button-subgroup">
+                {{#each subgroup.buttons as |b|}}
+                  <DButton
+                    {{on "click" (fn this.clickHandler b)}}
+                    @class="{{if (this.isButtonActive b.input) 'btn-primary'}}"
+                    @disabled={{if
+                      (and
+                        (eq b.label "order:[option]-asc") (not this.isOrderSet)
+                      )
+                      "disabled"
+                      undefined
+                    }}
+                    @translatedLabel={{b.label}}
+                  />
+                {{/each}}
+              </div>
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+    {{#if this.newQueryString}}
+      <div class="topic-query-filter__controls">
+        <DButton
+          @icon="times"
+          @action={{action this.clearInput}}
+          @disabled={{unless this.newQueryString "true"}}
+        />
+
+        {{#if this.discoveryFilter.q}}
+          <DButton
+            @icon={{this.copyIcon}}
+            @class={{this.copyClass}}
+            @action={{fn this.copyQueryString}}
+            @disabled={{unless this.newQueryString "true"}}
+          />
+        {{/if}}
+      </div>
+    {{/if}}
+  </div>
+</DSection>
