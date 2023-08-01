@@ -1,0 +1,39 @@
+<div class="topic-query-filter__button-group-container">
+  {{#each this.buttonGroups as |group|}}
+    <div class="topic-query-filter__button-group">
+      <div
+        class="topic-query-filter__button-group-header"
+      >{{group.label}}</div>
+      {{#each group.buttons as |b|}}
+        <DButton
+          {{on "click" (fn this.clickHandler b)}}
+          @class="{{if (this.isButtonActive b.input) 'btn-primary'}}"
+          @disabled={{if
+            (and (eq b.label "order:[option]-asc") (not this.isOrderSet))
+            "disabled"
+            undefined
+          }}
+          @translatedLabel={{b.label}}
+        />
+      {{/each}}
+      {{#each group.subgroups as |subgroup|}}
+        <div class="topic-query-filter__button-subgroup">
+          {{#each subgroup.buttons as |b|}}
+            <DButton
+              {{on "click" (fn this.clickHandler b)}}
+              @class="{{if (this.isButtonActive b.input) 'btn-primary'}}"
+              @disabled={{if
+                (and
+                  (eq b.label "order:[option]-asc") (not this.isOrderSet)
+                )
+                "disabled"
+                undefined
+              }}
+              @translatedLabel={{b.label}}
+            />
+          {{/each}}
+        </div>
+      {{/each}}
+    </div>
+  {{/each}}
+</div>
