@@ -14,33 +14,27 @@ export default class Sidebar extends Component {
     return getOwner(this).lookup("controller:discovery/filter");
   }
 
-  get navigationFilter() {
-    return getOwner(this).lookup("controller:navigation/filter");
-  }
-
   @action
   manageColonLabels(label, labelRegex) {
     if (this.args.newQueryString.match(labelRegex)) {
       this.newQueryString = this.args.newQueryString
         .replace(labelRegex, "")
         .trim();
-      this.discoveryFilter.updateTopicsListQueryParams(
-        this.newQueryString
-      );
+      this.discoveryFilter.updateTopicsListQueryParams(this.newQueryString);
     } else {
       this.newQueryString = this.args.newQueryString
-        ? `${this.args.newQueryString} ${label.input.trim()}${label.placeholder
-        }`
+        ? `${this.args.newQueryString} ${label.input.trim()}${
+            label.placeholder
+          }`
         : `${label.input.trim()}${label.placeholder}`;
 
-      this.navigationFilter.newQueryString = this.newQueryString
+      this.args.updateQueryString(this.newQueryString);
       document.getElementById("queryStringInput").focus();
     }
   }
 
   @action
   isButtonActive(inputValue) {
-    console.log("is button active", inputValue);
     let regex;
     if (inputValue.endsWith("-asc")) {
       regex = new RegExp(`order:\\S*-asc`, "g");
@@ -59,12 +53,12 @@ export default class Sidebar extends Component {
     this.newQueryString = this.args.newQueryString.match(regex)
       ? this.args.newQueryString.replace(regex, "").trim()
       : (
-        this.args.newQueryString +
-        " " +
-        button.input +
-        button.placeholder
-      ).trim();
-    this.navigationFilter.newQueryString = this.newQueryString
+          this.args.newQueryString +
+          " " +
+          button.input +
+          button.placeholder
+        ).trim();
+    this.args.updateQueryString(this.newQueryString);
     idToFocus && document.getElementById(idToFocus).focus();
     this.discoveryFilter.updateTopicsListQueryParams(this.newQueryString);
   }
@@ -76,10 +70,7 @@ export default class Sidebar extends Component {
     let orderMatch = this.args.newQueryString.match(orderRegex);
     let orderExists = this.args.newQueryString.match(orderRegex)?.[0];
 
-    if (
-      button.label.endsWith(":") &&
-      !button.label.includes("[option]")
-    ) {
+    if (button.label.endsWith(":") && !button.label.includes("[option]")) {
       this.manageColonLabels(button, labelRegex);
       return;
     }
@@ -110,11 +101,7 @@ export default class Sidebar extends Component {
       }
     } else {
       if (button.label.endsWith(":")) {
-        this.modifyQuery(
-          button,
-          `${button.label}(\\S+)?`,
-          "queryStringInput"
-        );
+        this.modifyQuery(button, `${button.label}(\\S+)?`, "queryStringInput");
       } else {
         this.modifyQuery(button, `\\b${button.label}[^ ]*\\b`);
       }
@@ -123,5 +110,4 @@ export default class Sidebar extends Component {
     this.discoveryFilter.updateTopicsListQueryParams(this.newQueryString);
     document.getElementById("queryStringInput").focus();
   }
-
 }
