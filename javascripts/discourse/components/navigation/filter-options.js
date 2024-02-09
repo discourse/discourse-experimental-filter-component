@@ -1,9 +1,6 @@
 import { action } from "@ember/object";
 import Component from "@glimmer/component";
-import { bind } from "discourse-common/utils/decorators";
-import { inject as service } from "@ember/service";
 import { getOwner } from "discourse-common/lib/get-owner";
-import { tracked } from "@glimmer/tracking";
 
 export default class Sidebar extends Component {
   get buttonGroups() {
