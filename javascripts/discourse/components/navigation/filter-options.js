@@ -1,5 +1,5 @@
-import { action } from "@ember/object";
 import Component from "@glimmer/component";
+import { action } from "@ember/object";
 import { getOwner } from "discourse-common/lib/get-owner";
 
 export default class Sidebar extends Component {
