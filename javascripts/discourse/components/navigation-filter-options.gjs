@@ -1,8 +1,12 @@
 import Component from "@glimmer/component";
+import { fn } from "@ember/helper";
+import { on } from "@ember/modifier";
 import { action } from "@ember/object";
+import { and, eq, not } from "truth-helpers";
+import DButton from "discourse/components/d-button";
 import { getOwner } from "discourse-common/lib/get-owner";
 
-export default class Sidebar extends Component {
+export default class NavigationFilterOptions extends Component {
   get buttonGroups() {
     return JSON.parse(settings.filter_buttons);
   }
@@ -107,4 +111,44 @@ export default class Sidebar extends Component {
     this.discoveryFilter.updateTopicsListQueryParams(this.newQueryString);
     document.getElementById("queryStringInput").focus();
   }
+
+  <template>
+    <div class="topic-query-filter__button-group-container">
+      {{#each this.buttonGroups as |group|}}
+        <div class="topic-query-filter__button-group">
+          <div
+            class="topic-query-filter__button-group-header"
+          >{{group.label}}</div>
+          {{#each group.buttons as |b|}}
+            <DButton
+              {{on "click" (fn this.clickHandler b)}}
+              @translatedLabel={{b.label}}
+              @disabled={{if
+                (and (eq b.label "order:[option]-asc") (not this.isOrderSet))
+                "disabled"
+              }}
+              class={{if (this.isButtonActive b.input) "btn-primary"}}
+            />
+          {{/each}}
+          {{#each group.subgroups as |subgroup|}}
+            <div class="topic-query-filter__button-subgroup">
+              {{#each subgroup.buttons as |b|}}
+                <DButton
+                  {{on "click" (fn this.clickHandler b)}}
+                  @translatedLabel={{b.label}}
+                  @disabled={{if
+                    (and
+                      (eq b.label "order:[option]-asc") (not this.isOrderSet)
+                    )
+                    "disabled"
+                  }}
+                  class={{if (this.isButtonActive b.input) "btn-primary"}}
+                />
+              {{/each}}
+            </div>
+          {{/each}}
+        </div>
+      {{/each}}
+    </div>
+  </template>
 }
