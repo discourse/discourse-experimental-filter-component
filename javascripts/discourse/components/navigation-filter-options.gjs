@@ -2,9 +2,9 @@ import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
 import { action } from "@ember/object";
+import { getOwner } from "@ember/owner";
 import { and, eq, not } from "truth-helpers";
 import DButton from "discourse/components/d-button";
-import { getOwner } from "@ember/owner";
 
 export default class NavigationFilterOptions extends Component {
   get buttonGroups() {
