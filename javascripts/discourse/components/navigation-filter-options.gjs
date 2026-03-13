@@ -3,8 +3,8 @@ import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
 import { action } from "@ember/object";
 import { getOwner } from "@ember/owner";
-import { and, eq, not } from "truth-helpers";
 import DButton from "discourse/components/d-button";
+import { and, eq, not } from "discourse/truth-helpers";
 
 export default class NavigationFilterOptions extends Component {
   get buttonGroups() {
